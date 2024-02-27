@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Forgot password</title>
+    <title>Reset password</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -63,33 +63,39 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">New password</h5>
-                                        <p class="text-center small">Enter your email </p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Reset your password</h5>
+                                        <p class="text-center small">Enter new password</p>
                                     </div>
 
                                     @include('frontend.layout.message')
+
                                     <form class="row g-3 needs-validation" action="" method="POST">
 
                                         {{ csrf_field() }}
 
-                                        <div class="col-12">
-                                            <label for="email" class="form-label">Your Email</label>
-                                            <input type="email" name="email" class="form-control" id="email"
-                                                required>
-                                            <div class="invalid-feedback">Please enter your Email !</div>
-                                        </div>
-
 
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Forgot</button>
+                                            <label for="yourPassword" class="form-label">New Password</label>
+                                            <input type="password" name="password" class="form-control"
+                                                id="yourPassword" required>
                                         </div>
 
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Confirm new Password</label>
+                                            <input type="password" name="confirm_password" class="form-control"
+                                                id="yourPassword" required>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Don't have account? <a
                                                     href="{{ url('register') }}">Create an account</a></p>
                                         </div>
                                         <div class="col-12">
-                                            <p class="small mb-0"><a href="{{ url('login') }}">Login</a></p>
+                                            <p class="small mb-0"><a href="{{ url('forgotPassword') }}">I forgot my
+                                                    password !</a></p>
                                         </div>
                                     </form>
 

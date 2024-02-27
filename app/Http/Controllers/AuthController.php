@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPasswordMail;
 use App\Mail\RegisterMail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,20 +25,19 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
 
             if (!empty(Auth::user()->email_verified_at)) {
-                echo "successfull";
-                die;
+                return redirect('/dashboard')->with('success', "Login successfuly");
             } else {
 
                 $user_id = Auth::user()->id;
                 Auth::logout();
 
                 $save = User::getSingle($user_id);
-                 
+
                 $save->remember_token = Str::random(40);
 
                 $save->save();
 
-                
+
 
                 Mail::to($save->email)->send(new RegisterMail($save));
 
@@ -93,4 +93,64 @@ class AuthController extends Controller
     {
         return view('auth.forgotPassword',);
     }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('email', '=', $request->email)->first();
+
+        if (!empty($user)) {
+            $user->remember_token = Str::random(40);
+            $user->save();
+            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+            return redirect()->back()->with('success', "Please, check your email and reset your password");
+        } else {
+            return redirect()->back()->with('error', "Email incorrect or not found");
+        }
+    }
+
+    public function reset($token)
+    {
+        $user = User::where('remember_token', '=', $token)->first();
+        if (!empty($user)) {
+
+            return view('auth.reset', compact('user'));
+
+        } else {
+
+            abort(404);
+        }
+    }
+
+    public function post_reset(Request $request, $token){
+
+        $user = User::where('remember_token', '=', $token)->first();
+        if (!empty($user)) {
+
+            if($request->password == $request->confirm_password){
+
+                $user->password = Hash::make($request->password);
+                if(empty($user->email_verified_at)){
+                    $user->email_verified_at = date('Y-m-d H:i:s');
+                }
+                $user->remember_token = Str::random(40);
+                $user->save();
+                return redirect('login')->with('success', "Password changed successfully");
+
+            }else{
+                return redirect()->back()->with('error', "Passwords don't match");
+            }
+
+        } else {
+
+            abort(404);
+        }
+
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('login');
+    }
+
 }

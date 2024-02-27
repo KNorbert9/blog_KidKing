@@ -46,4 +46,12 @@ class User extends Authenticatable
     static public function getSingle($id){
         return self::find($id);
     }
+
+    static public function getAllUsers(){
+        return self::select('users.*')
+        ->where('is_deleted', '=' , 0)
+        ->where('is_admin', '=' , 0)
+        ->orderBy('users.id', 'DESC')
+        ->paginate(20);
+    }
 }
