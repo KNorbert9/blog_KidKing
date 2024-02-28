@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function user()
     {
-        $users ['getAllUsers'] = User::getAllUsers();
+        $users['getAllUsers'] = User::getAllUsers();
         return view('backend.users.users', $users);
     }
 
@@ -36,6 +36,46 @@ class UserController extends Controller
         $user->save();
 
         return redirect('/dashboard/users')->with('success', 'User Added Successfully');
+    }
 
+
+    public function edit_user($id)
+    {
+        $user = User::find($id);
+
+        return view('backend.users.editUser', compact('user'));
+    }
+
+
+    public function update_user(Request $request, $id)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required | email | unique:users,email,' . $id,
+        ]);
+
+
+        $user = User::find($id);
+        $user->name = trim($request->name);
+        $user->email = trim($request->email);
+
+        if (!empty($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->status = trim($request->status == '1') ? 1 : 0;
+        $user->save();
+
+        return redirect('/dashboard/users')->with('success', 'User Updated Successfully');
+    }
+
+    public function delete_user($id)
+    {
+        $user = User::find($id);
+        //$user->delete();
+        $user->is_deleted = 1;
+        $user->save();
+        return redirect()->back()->with('success', 'User Deleted Successfully');
     }
 }

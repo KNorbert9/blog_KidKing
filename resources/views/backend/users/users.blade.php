@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Liste des utilisateurs
-                    <a href="{{ url('dashboard/users/add') }}" class="btn btn-primary float-end" >Add new
+                    <a href="{{ url('dashboard/users/add') }}" class="btn btn-primary float-end">Add new
                         User</a>
                 </h5>
 
@@ -35,8 +35,11 @@
                                 <td>{{ !empty($user->status) ? 'True' : 'False' }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>
-                                    <a href="{{ url('dashboard/users/edit/' . $user->id) }}" class="btn btn-primary">Edit</a>
-                                    <a href="{{ url('dashboard/users/delete/' . $user->id) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ url('dashboard/users/edit/' . $user->id) }}"
+                                        class="btn btn-primary">Edit</a>
+                                    <a onclick="return confirm('Are you sure you want to delete this user')"
+                                        href="{{ url('dashboard/users/delete/' . $user->id) }}"
+                                        class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
