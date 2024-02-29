@@ -17,13 +17,13 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Slug</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Meta Title</th>
-                            <th scope="col">Meta Description</th>
-                            <th scope="col">Meta Keyword</th>
+                            <th scope="col">Categorie</th>
+                            <th scope="col">Description</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Published</th>
                             <th scope="col">Created Date</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -32,13 +32,13 @@
                         @foreach ($getAllBlogs as $blog)
                             <tr>
                                 <th scope="row">{{ $blog->id }}</th>
-                                <td>{{ $blog->name }}</td>
-                                <td>{{ $blog->slug }}</td>
+                                <td><img src="{{ $blog->getImage() }}" width="100px" alt=""></td>
+                                <td>{{ $blog->user_name }}</td>
                                 <td>{{ $blog->title }}</td>
-                                <td>{{ $blog->meta_title }}</td>
-                                <td>{{ $blog->meta_description }}</td>
-                                <td>{{ $blog->meta_keywords }}</td>
+                                <td>{{ $blog->category_name }}</td>
+                                <td>{{ $blog->description }}</td>
                                 <td>{{ !empty($blog->status) ? 'True' : 'False' }}</td>
+                                <td>{{ !empty($blog->is_publish) ? 'Yes' : 'No' }}</td>
                                 <td>{{ $blog->created_at }}</td>
                                 <td>
                                     <a href="{{ url('dashboard/blogs/edit/' . $blog->id) }}"

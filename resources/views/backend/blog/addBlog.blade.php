@@ -14,17 +14,14 @@
                         <!-- Vertical Form -->
                         <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
                             {{ csrf_field() }}
+
                             <div class="col-12">
-                                <label for="inputNanme4" class="form-label">User Name</label>
-                                <input type="text" class="form-control" name="username" required id="inputNanme4">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputEmail4" class="form-label">Title</label>
-                                <input type="text" class="form-control" name="title" required id="inputEmail4">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" name="title" required>
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Category</label>
-                                <select name="" class="form-control" id="" required>
+                                <select name="categorie_id" class="form-control" id="" required>
                                     <option value="">Select Category</option>
                                     @foreach ($categorie as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -33,11 +30,11 @@
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="image" required id="inputPassword4">
+                                <input type="file" class="form-control" name="image">
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Description</label>
-                                <textarea type="text" class="form-control tinymce-editor" name="description" required id="inputPassword4"></textarea>
+                                <textarea class="form-control tinymce-editor" name="description"></textarea>
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Tags</label>
@@ -45,7 +42,10 @@
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Publish</label>
-                                <input type="text" class="form-control" name="publish" required id="inputPassword4">
+                                <select name="is_publish" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Status</label>

@@ -14,13 +14,23 @@ class Blog extends Model
 
     protected $table = 'blog';
 
-    static public function getAllBlogs(){
-        return self::select('blog.*')
-        ->where('is_deleted', '=' , 0)
-        ->where('status', '=' , 1)
-        ->orderBy('blog.id', 'DESC')
-        ->paginate(20);
+    static public function getAllBlogs()
+    {
+        return self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->join('users', 'blog.user_id', '=', 'users.id')
+            ->where('blog.is_deleted', '=', 0)
+            ->orderBy('blog.id', 'DESC')
+            ->paginate(20);
     }
 
+    public function getImage()
+    {
+        if (!empty($this->image) && file_exists('upload/blog/' . $this->image)) {
 
+            return asset('upload/blog/' . $this->image);
+        }else{
+            return asset('upload/blog/default.png');
+        }
+    }
 }
