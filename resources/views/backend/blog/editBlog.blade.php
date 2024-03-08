@@ -1,5 +1,6 @@
 @extends('backend.layout.app')
 @section('style')
+    <link href="{{ asset('admin/assets/tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -27,7 +28,8 @@
                                 <select name="categorie_id" class="form-control" id="" required>
                                     <option value="">Select Category</option>
                                     @foreach ($categorie as $category)
-                                        <option {{ $Blog->categorie_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">
+                                        <option {{ $Blog->categorie_id == $category->id ? 'selected' : '' }}
+                                            value="{{ $category->id }}">
                                             {{ $category->name }}</option>
                                     @endforeach
                                 </select>
@@ -46,6 +48,18 @@
                                 <label for="inputEmail4" class="form-label">Description</label>
                                 <textarea class="form-control tinymce-editor" id="inputEmail4" name="description">{{ $Blog->description }}</textarea>
                                 <div>{{ $errors->first('description') }}</div>
+                            </div>
+                            <div class="col-12">
+                                @php
+                                    $tagstring = '';
+                                    foreach ($Blog->getTags as $tag) {
+                                        $tagstring .= $tag->name . ',';
+                                    }
+                                @endphp
+                                <label class="form-label">Tags</label>
+
+                                <input type="text" class="form-control" value="{{ $tagstring }}" name="tags"
+                                    id="tags">
                             </div>
 
                             <div class="col-12">
@@ -78,4 +92,8 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('admin/assets/tagsinput/bootstrap-tagsinput.js') }}"></script>
+    <script type="text/javascript">
+        $("#tags").tagsinput();
+    </script>
 @endsection

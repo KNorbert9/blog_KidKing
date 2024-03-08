@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Categorie;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +14,8 @@ class BlogController extends Controller
 {
     public function Blog()
     {
-        $Blogs['getAllBlogs'] = Blog::getAllBlogs();
-        return view('backend.Blog.Blog', $Blogs);
+        $blogs['blogs'] = Blog::getAllBlogs();
+        return view('backend.Blog.Blog', $blogs);
     }
 
     public function addBlog()
@@ -67,6 +68,8 @@ class BlogController extends Controller
 
         $Blog->save();
 
+        Tag::InsertDeleteTag($Blog->id, $request->tags);
+
         return redirect('/dashboard/blogs')->with('success', 'Blog Added Successfully');
     }
 
@@ -94,8 +97,8 @@ class BlogController extends Controller
 
         if (!empty($request->file('image'))) {
             // Check if the current image exists and delete it
-            if (!empty($Blog->image) && Storage::exists('upload/blog/' . $Blog->image)) {
-                Storage::delete('upload/blog/' . $Blog->image);
+            if (!empty($Blog->image)) {
+                unlink('upload/blog/' . $Blog->image);
             }
 
             // Upload and save the new image
@@ -114,6 +117,8 @@ class BlogController extends Controller
         }
 
         $Blog->save();
+
+        Tag::InsertDeleteTag($Blog->id, $request->tags);
 
         return redirect('/dashboard/blogs')->with('success', 'Blog Updated Successfully');
     }

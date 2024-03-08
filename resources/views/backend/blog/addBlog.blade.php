@@ -1,5 +1,6 @@
 @extends('backend.layout.app')
 @section('style')
+<link href="{{ asset('admin/assets/tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -37,8 +38,8 @@
                                 <textarea class="form-control tinymce-editor" name="description"></textarea>
                             </div>
                             <div class="col-12">
-                                <label for="inputPassword4" class="form-label">Tags</label>
-                                <input type="text" class="form-control" name="tags" required id="inputPassword4">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="form-control" name="tags" id="tags">
                             </div>
                             <div class="col-12">
                                 <label for="inputPassword4" class="form-label">Publish</label>
@@ -69,4 +70,8 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('admin/assets/tagsinput/bootstrap-tagsinput.js') }}"></script>
+    <script type="text/javascript">
+        $("#tags").tagsinput();
+    </script>
 @endsection
