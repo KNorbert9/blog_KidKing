@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class Blog extends Model
@@ -94,6 +95,10 @@ class Blog extends Model
             ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
             ->join('users', 'blog.user_id', '=', 'users.id');
 
+        if (!empty(Auth::check()) && Auth::user()->is_admin == 1) {
+            $result = $query->where('blog.user_id', '=', request('id'));
+        }
+
 
         if (!empty(request('id'))) {
             $result = $query->where('blog.id', '=', request('id'));
@@ -149,5 +154,10 @@ class Blog extends Model
     public function getTags()
     {
         return $this->hasMany(Tag::class, 'blog_id');
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, 'blog_id')->orderBy('comment.id', 'desc');
     }
 }

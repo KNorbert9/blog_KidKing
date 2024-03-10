@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Categorie;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -55,14 +57,27 @@ class HomeController extends Controller
                 $category = Categorie::getAllCategories();
                 $data['getRecord'] = $getRecord;
                 $getRecentPost = Blog::getRecentPost();
-                $metaTitle = $getCategory->meta_title;
-                $metaDescription = $getCategory->meta_description;
-                $metaKeyword = $getCategory->meta_keywords;
+                // $metaTitle = $getCategory->meta_title;
+                // $metaDescription = $getCategory->meta_description;
+                // $metaKeyword = $getCategory->meta_keywords;
                 $getRelatedPost = Blog::getRelatedPost($getRecord->categorie_id, $getRecord->id);
-                return view('frontend.blogDetail', compact('getRecord', 'category', 'getRecentPost', 'getRelatedPost', 'metaTitle', 'metaDescription', 'metaKeyword'));
+                return view('frontend.blogDetail', compact('getRecord', 'category', 'getRecentPost', 'getRelatedPost'));
             } else {
                 abort(404);
             }
         }
+    }
+
+
+    public function comment_submit(Request $request)
+    {
+        $save = new Comment;
+
+        $save->user_id = Auth::user()->id;
+        $save->comment = $request->comment;
+        $save->blog_id = $request->blog_id;
+        $save->save();
+
+        return redirect()->back()->with('succes', "Comment created successfully");
     }
 }

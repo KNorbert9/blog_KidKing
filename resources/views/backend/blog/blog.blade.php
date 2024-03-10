@@ -18,10 +18,12 @@
                         <label class="form-label">ID</label>
                         <input type="text" name="id" class="form-control" value="{{ Request::get('id') }}">
                     </div>
+                    @if (Auth::user()->is_admin == 1)
                     <div class="col-md-2" style="margin-bottom: 5px">
                         <label class="form-label">Username</label>
                         <input type="text" name="username" class="form-control" value="{{ Request::get('username') }}">
                     </div>
+                    @endif
                     <div class="col-md-2" style="margin-bottom: 5px">
                         <label class="form-label">Title</label>
                         <input type="text" name="title" class="form-control" value="{{ Request::get('title') }}">
@@ -66,7 +68,9 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Image</th>
+                            @if (Auth::user()->is_admin == 1)
                             <th scope="col">Username</th>
+                            @endif
                             <th scope="col">Title</th>
                             <th scope="col">Categorie</th>
                             <th scope="col">Description</th>
@@ -82,7 +86,9 @@
                             <tr>
                                 <th scope="row">{{ $blog->id }}</th>
                                 <td><img src="{{ $blog->getImage() }}" width="100px" alt=""></td>
+                                @if (Auth::user()->is_admin == 1)
                                 <td>{{ $blog->user_name }}</td>
+                                @endif
                                 <td>{{ $blog->title }}</td>
                                 <td>{{ $blog->category_name }}</td>
                                 <td>{{ $blog->description }}</td>

@@ -14,19 +14,24 @@
 
         <li class="nav-heading">Pages</li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('dashboard/users') }}">
-                <i class="bi bi-person"></i>
-                <span>Users</span>
-            </a>
-        </li>
+        @if (Auth::user()->is_admin == 1)
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ url('dashboard/users') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+        @endif
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('dashboard/categories') }}">
-                <i class="bi bi-person"></i>
-                <span>Categories</span>
-            </a>
-        </li>
+
+        @if (Auth::user()->is_admin == 1)
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ url('dashboard/categories') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Categories</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ url('dashboard/blogs') }}">
@@ -35,19 +40,21 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ url('dashboard/pages') }}">
-                <i class="bi bi-person"></i>
-                <span>Pages</span>
-            </a>
-        </li>
+        @if (Auth::user()->is_admin == 1)
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ url('dashboard/pages') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Pages</span>
+                </a>
+            </li>
+        @endif
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link collapsed" href="{{ url('dashboard/tags') }}">
                 <i class="bi bi-person"></i>
                 <span>Tags</span>
             </a>
-        </li>
+        </li> --}}
 
 
 

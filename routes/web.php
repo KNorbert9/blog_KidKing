@@ -52,14 +52,7 @@ Route::post('reset/{token}', [AuthController::class, 'post_reset']);
 Route::get('logout', [AuthController::class, 'logout']);
 
 
-
-
-//Middleware pour gérer les users roles
-Route::group(['middleware' => 'userRole'], function () {
-
-    //Dashboard
-    Route::get('dashboard', [DashboardController::class, 'dashboard']);
-
+Route::group(['middleware' => 'admin'], function () {
 
     //User
     Route::get('dashboard/users', [UserController::class, 'user']);
@@ -87,6 +80,27 @@ Route::group(['middleware' => 'userRole'], function () {
     Route::get('dashboard/categories/delete/{id}', [CategorieController::class, 'delete_categorie']);
 
 
+    //Pages
+    Route::get('dashboard/pages', [PageController::class, 'page']);
+
+    Route::get('dashboard/pages/add', [PageController::class, 'addPage']);
+
+    Route::post('dashboard/pages/add', [PageController::class, 'insert_page']);
+
+    Route::get('dashboard/pages/edit/{id}', [PageController::class, 'edit_page']);
+    Route::post('dashboard/pages/edit/{id}', [PageController::class, 'update_page']);
+
+    Route::get('dashboard/pages/delete/{id}', [PageController::class, 'delete_page']);
+
+});
+
+//Middleware pour gérer les users roles
+Route::group(['middleware' => 'userRole'], function () {
+
+    //Dashboard
+    Route::get('dashboard', [DashboardController::class, 'dashboard']);
+
+
     //Blogs
     Route::get('dashboard/blogs', [BlogController::class, 'blog']);
 
@@ -100,17 +114,8 @@ Route::group(['middleware' => 'userRole'], function () {
     Route::get('dashboard/blogs/delete/{id}', [BlogController::class, 'delete_blog']);
 
 
-    //Pages
-    Route::get('dashboard/pages', [PageController::class, 'page']);
+    Route::post('comment_submit', [HomeController::class, 'comment_submit']);
 
-    Route::get('dashboard/pages/add', [PageController::class, 'addPage']);
-
-    Route::post('dashboard/pages/add', [PageController::class, 'insert_page']);
-
-    Route::get('dashboard/pages/edit/{id}', [PageController::class, 'edit_page']);
-    Route::post('dashboard/pages/edit/{id}', [PageController::class, 'update_page']);
-
-    Route::get('dashboard/pages/delete/{id}', [PageController::class, 'delete_page']);
 });
 
 
