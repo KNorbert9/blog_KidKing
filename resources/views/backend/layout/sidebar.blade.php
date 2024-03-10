@@ -36,6 +36,13 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ url('dashboard/pages') }}">
+                <i class="bi bi-person"></i>
+                <span>Pages</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="{{ url('dashboard/tags') }}">
                 <i class="bi bi-person"></i>
                 <span>Tags</span>

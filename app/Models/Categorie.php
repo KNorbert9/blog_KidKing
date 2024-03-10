@@ -13,10 +13,37 @@ class Categorie extends Model
 
     protected $table = 'categorie';
 
-    static public function getAllCategories(){
+    static public function getAllCategories()
+    {
         return self::select('categorie.*')
-        ->where('is_deleted', '=' , 0)
-        ->orderBy('categorie.id', 'DESC')
-        ->paginate(20);
+            ->where('is_deleted', '=', 0)
+            ->orderBy('categorie.id', 'DESC')
+            ->paginate(20);
+    }
+
+    public function totalBlogs()
+    {
+        return $this->hasMany(Blog::class, 'categorie_id')
+            ->where('blog.status', '=', 1)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->count();
+    }
+
+    static public function getCategoryMenu()
+    {
+        return self::select('categorie.*')
+            ->where('categorie.is_deleted', '=', 0)
+            ->where('categorie.status', '=', 1)
+            ->get();
+    }
+
+    static public function getSlug($slug)
+    {
+        return self::select('categorie.*')
+            ->where('categorie.is_deleted', '=', 0)
+            ->where('categorie.status', '=', 1)
+            ->where('categorie.slug', '=', $slug)
+            ->first();
     }
 }

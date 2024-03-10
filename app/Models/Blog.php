@@ -15,6 +15,79 @@ class Blog extends Model
 
     protected $table = 'blog';
 
+    static public function getBlogBySlug($slug)
+    {
+        return self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('users', 'blog.user_id', '=', 'users.id')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->where('blog.status', '=', 1)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->where('blog.slug', '=', $slug)
+            ->first();
+    }
+
+    static public function getBlogs()
+    {
+        $return = self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->join('users', 'blog.user_id', '=', 'users.id');
+
+        if (!empty(request('search'))) {
+            $return = $return->where('blog.title', 'like', '%' . request('search') . '%');
+        }
+        $return = $return->where('blog.status', '=', 1)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->orderBy('blog.id', 'desc')
+            ->paginate(20);
+
+        return $return;
+    }
+
+    static public function getBlogsCategories($categorie_id)
+    {
+        $return = self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->join('users', 'blog.user_id', '=', 'users.id')
+            ->where('blog.categorie_id', '=', $categorie_id)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.status', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->orderBy('blog.id', 'desc')
+            ->paginate(20);
+
+        return $return;
+    }
+
+    static public function getRecentPost()
+    {
+        return self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->join('users', 'blog.user_id', '=', 'users.id')
+            ->where('blog.status', '=', 1)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->orderBy('blog.id', 'desc')
+            ->limit(3)
+            ->get();
+    }
+
+    static public function getRelatedPost($categorie_id, $id)
+    {
+        return self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')
+            ->join('categorie', 'blog.categorie_id', '=', 'categorie.id')
+            ->join('users', 'blog.user_id', '=', 'users.id')
+            ->where('blog.status', '=', 1)
+            ->where('blog.id', '!=', $id)
+            ->where('blog.categorie_id', '=', $categorie_id)
+            ->where('blog.is_publish', '=', 1)
+            ->where('blog.is_deleted', '=', 0)
+            ->orderBy('blog.id', 'desc')
+            ->limit(5)
+            ->get();
+    }
+
     static public function getAllBlogs()
     {
         $query = self::select('blog.*', 'categorie.name as category_name', 'users.name as user_name')

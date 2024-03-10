@@ -7,6 +7,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -25,6 +26,13 @@ use App\Http\Controllers\UserController;
 // });
 
 Route::get('/', [HomeController::class, 'home']);
+Route::get('about', [HomeController::class, 'about']);
+Route::get('contact', [HomeController::class, 'contact']);
+Route::get('teams', [HomeController::class, 'teams']);
+Route::get('gallery', [HomeController::class, 'gallery']);
+Route::get('blog', [HomeController::class, 'blog']);
+
+
 
 //login
 Route::get('login', [AuthController::class, 'login']);
@@ -90,4 +98,20 @@ Route::group(['middleware' => 'userRole'], function () {
     Route::post('dashboard/blogs/edit/{id}', [BlogController::class, 'update_blog']);
 
     Route::get('dashboard/blogs/delete/{id}', [BlogController::class, 'delete_blog']);
+
+
+    //Pages
+    Route::get('dashboard/pages', [PageController::class, 'page']);
+
+    Route::get('dashboard/pages/add', [PageController::class, 'addPage']);
+
+    Route::post('dashboard/pages/add', [PageController::class, 'insert_page']);
+
+    Route::get('dashboard/pages/edit/{id}', [PageController::class, 'edit_page']);
+    Route::post('dashboard/pages/edit/{id}', [PageController::class, 'update_page']);
+
+    Route::get('dashboard/pages/delete/{id}', [PageController::class, 'delete_page']);
 });
+
+
+Route::get('{slug}', [HomeController::class, 'blogDetail']);

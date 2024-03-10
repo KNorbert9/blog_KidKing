@@ -587,5 +587,6 @@
 
     <!-- Footer End -->
 @endsection
+
 @section('script')
 @endsection
